@@ -1,0 +1,40 @@
+Wrangler
+=================
+
+Wrangler is a Django webserver that integrates with React.js to provide a service for parsing iOS status emails and displaying them in a friendly way to people who don't feel like checking their emails.
+
+Running
+=================
+Note: it is always recommended that you use a virtual environment for running or developing python applications.
+
+To run the webservice, activate your virtual environment and pip install the requirements located in the server directory.
+`pip install -r requirements.txt`
+
+Then run with `python manage.py runserver`
+
+
+###Routes currently supported:
+* / - Base Route, loads the grid of statuses
+* /admin/ - admin panel
+* /status/ - get todays status
+* /status/YYYY/MM/DD/ - get status for YYYY-MM-DD
+
+
+
+Development
+=================
+
+##Django
+
+Pip install the requirements and run the server as above. The server will automatically reload on detecting changes.
+
+##React
+
+Using React+Griddle with Gulp to display the iOS Team status
+
+Files and package.json are located within the static directory.
+
+Use `npm install` in the directory with the package.json to install the dependencies for this project.
+
+Run `gulp` to build the main script and set up the watch task that will check for changes in the source files.
+

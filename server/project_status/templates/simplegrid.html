@@ -1,0 +1,12 @@
+<!-- Django Templating -->
+
+<div class="row">
+
+    {% for status in statuses %}
+    <div class="col-md-3">{{ status.developer.full_name }}</div>
+    <div class="col-md-3">{{ status.project }}</div>
+    <div class="col-md-3">{{ status.status }}</div>
+
+    {% endfor %}
+
+</div>
