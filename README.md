@@ -3,9 +3,17 @@ Wrangler
 
 Wrangler is a Django webserver that integrates with React.js to provide a service for parsing iOS status emails and displaying them in a friendly way to people who don't feel like checking their emails.
 
+
+
+
 Running
 =================
 Note: it is always recommended that you use a virtual environment for running or developing python applications.
+
+###Environment
+Currently uses two environment variables for authenticating to IMAP
+* `GMAIL_ACCOUNT` - gmail account that has access to dev emails
+* `GMAIL_AUTH` - gmail account password
 
 To run the webservice, activate your virtual environment and pip install the requirements located in the server directory.
 `pip install -r requirements.txt`
@@ -18,7 +26,6 @@ Then run with `python manage.py runserver`
 * /admin/ - admin panel
 * /status/ - get todays status
 * /status/YYYY/MM/DD/ - get status for YYYY-MM-DD
-
 
 
 Development
