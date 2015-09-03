@@ -172,21 +172,22 @@ def load_status_emails_for_date(date):
 		#parse developers
 		sender = message['from']
 		email = get_email_from_sender(sender)
-		save_developer(email)
+		if not email.startswith('dev.null'):
+			save_developer(email)
 
-		#parse projects / statuses
-		body = message['body']
-		projects_status = get_body_text_from_message(body)
-		#should be a collection of project, status tuples
-		parsed = tryparse_projects_and_statuses(projects_status)
-		
-		for project, status in parsed:
-			#print('PROJECT', project, 'STATUS', status)
-			developer = Developer.objects.filter(email=email).first()
-			project, created = Project.objects.get_or_create(name=project)
-			project.save()
-			s, created = Status.objects.get_or_create(developer=developer, project=project, status=status, date=date)
-			s.save()
-			statuses.append(s)
+			#parse projects / statuses
+			body = message['body']
+			projects_status = get_body_text_from_message(body)
+			#should be a collection of project, status tuples
+			parsed = tryparse_projects_and_statuses(projects_status)
+			
+			for project, status in parsed:
+				#print('PROJECT', project, 'STATUS', status)
+				developer = Developer.objects.filter(email=email).first()
+				project, created = Project.objects.get_or_create(name=project)
+				project.save()
+				s, created = Status.objects.get_or_create(developer=developer, project=project, status=status, date=date)
+				s.save()
+				statuses.append(s)
 		
 	return statuses
