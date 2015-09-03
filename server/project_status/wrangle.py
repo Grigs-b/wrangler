@@ -9,13 +9,6 @@ def search_string(date):
     status_subject = '(SUBJECT \"[iOS Status {dateformatted}]\")'.format(dateformatted=dateformatted)
     return status_subject
 
-class EmailParser():
-	
-	def __init__(self, sender, body):
-		self.sender = sender
-		self.body = body
-
-
 class IMAPClient():
 	def __init__(self, connection=None):
 		self.connection = connection if connection else imaplib.IMAP4_SSL('imap.gmail.com')
@@ -119,13 +112,6 @@ def parse_html_status(text):
 	project_names = [b.string for b in soup.find_all('b') if b.string]
 
 	statuses = [status.string.encode('ascii', 'ignore') for status in soup.find_all('div') if status.string and status.string not in project_names]
-	"""
-	print('-------------------')
-	print(project_names)
-	print('-------------------')
-	print(statuses)
-	print('-------------------')
-	"""
 	return itertools.izip_longest(project_names, statuses, fillvalue='Unknown')
 
 PLAINTEXT_STATUS_REGEX = re.compile(r'\s*\*([A-Za-z: ]+)\*')
@@ -143,7 +129,6 @@ def parse_plaintext_status(text):
 			# group(0) contains the entire matched string, not just the group
 			status = line.replace(match.group(0), '').lstrip(':').encode('ascii', 'ignore')
 
-		
 		if status:
 			if current_project not in project_statuses.keys():
 				project_statuses[current_project] = status
