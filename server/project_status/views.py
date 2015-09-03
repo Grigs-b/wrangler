@@ -28,9 +28,13 @@ def json_statuses_for_date(status_date):
     return JsonResponse(data, safe=False)
 
 def index(request):
-    return json_statuses_for_date(datetime.datetime.today())
+    statuses = load_status_emails_for_date(datetime.datetime.today())
+    serializer = StatusSerializer()
+    data = serializer.serialize(statuses)
+    return JsonResponse(data, safe=False)
 
 def status_daily(request, year, month, day):
     date_to_find = datetime.date(int(year), int(month), int(day))
-    return json_statuses_for_date(date_to_find)
+    found = json_statuses_for_date(date_to_find)
+    return found
 
