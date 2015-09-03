@@ -2,6 +2,7 @@ from django.conf import settings
 import imaplib, email, quopri, re, itertools, datetime
 from .models import Project, Developer, Status
 from bs4 import BeautifulSoup
+from timeit import timeit
 
 def search_string(date):
     dateformatted = date.strftime('%Y.%-m.%-d') #note: this dateformat will not work on Windows.
@@ -22,7 +23,6 @@ class IMAPClient():
 	def login(self, user, auth):
 		self.connection.login(user, auth)
 		response, mailboxes = self.connection.list()
-		print(response, mailboxes)
 
 	def logout(self):
 		try:
@@ -31,19 +31,21 @@ class IMAPClient():
 			pass
 		self.connection.logout()
 
-	def status_emails(self, date):
+	@timeit
+	def search_inbox_for_email_thread(self, date):
 		response, count = self.connection.select("INBOX")
-		print(response, count)
 		search = search_string(date)
 		result, data = self.connection.search(None, search)
 		if not data:
 			print('no data found in search')
-			return None
+			return []
+		return data
 
+	@timeit
+	def parse_status_email_thread(self, data):
 		statuses = []
 		for email_id in data[0].split():
 			response, message_data = self.connection.fetch(email_id, '(BODY.PEEK[TEXT])')
-
 			message = ""
 			for response_part in message_data:
 				if isinstance(response_part, tuple):
@@ -55,18 +57,19 @@ class IMAPClient():
 					else:
 						message = quopri.decodestring(body.get_payload())
 
-			response, headers_data = self.connection.fetch(email_id, '(RFC822)')
+			response, headers_data = self.connection.fetch(email_id, '(BODY[HEADER.FIELDS (SUBJECT FROM)])')
 			headers = email.message_from_string(headers_data[0][1])
 			statuses.append({ "from": headers['FROM'], "body": message })
 
 		return statuses
 
 # DEVELOPER METHODS
-EMAIL_REGEX = r'[<]([^>]+)[>]'
+EMAIL_REGEX = re.compile(r'[<]([^>]+)[>]')
+
 def get_email_from_sender(sender):
 
 	email = sender
-	match = re.search(EMAIL_REGEX, sender)
+	match = EMAIL_REGEX.search(sender)
 	if match:
 		email = match.group(1)
 
@@ -88,11 +91,7 @@ def save_developer(email):
 
 
 # PROJECT / STATUS METHODS
-def get_start_of_message_index(body):
-	index = max()
-
-EMAIL_ON_DATE_REGEX = r'On (Mon|Tue|Wed|Thu|Fri|Sat|Sun), [A-Za-z]{3} [0-9]{1,2}, [0-9]{4} at [0-9]{1,2}:[0-9]{2} (AM|PM)'
-
+EMAIL_ON_DATE_REGEX = re.compile(r'On (Mon|Tue|Wed|Thu|Fri|Sat|Sun), [A-Za-z]{3} [0-9]{1,2}, [0-9]{4} at [0-9]{1,2}:[0-9]{2} (AM|PM)')
 def get_body_text_from_message(message_body):
 	lines = message_body.split('\r\n')
 	clean_lines = []
@@ -109,7 +108,7 @@ def get_body_text_from_message(message_body):
 		elif line.startswith('>') or line.endswith('> wrote:'):
 			#once we start getting into replies, everything past then is garbo
 			break
-		elif re.search(EMAIL_ON_DATE_REGEX, line):
+		elif EMAIL_ON_DATE_REGEX.search(line):
 			break
 		elif len(line) > 0:
 			clean_lines.append(line)
@@ -120,19 +119,22 @@ def parse_html_status(text):
 	project_names = [b.string for b in soup.find_all('b') if b.string]
 
 	statuses = [status.string.encode('ascii', 'ignore') for status in soup.find_all('div') if status.string and status.string not in project_names]
+	"""
 	print('-------------------')
 	print(project_names)
 	print('-------------------')
 	print(statuses)
 	print('-------------------')
+	"""
 	return itertools.izip_longest(project_names, statuses, fillvalue='Unknown')
 
+PLAINTEXT_STATUS_REGEX = re.compile(r'\s*\*([A-Za-z: ]+)\*')
 def parse_plaintext_status(text):
 	lines = text.split('\n')
 	current_project = "Unknown"
 	project_statuses = {}
 	for line in lines:
-		match = re.match(r'\s*\*([A-Za-z: ]+)\*', line)
+		match = PLAINTEXT_STATUS_REGEX.match(line)
 		status = line
 		if match:
 			# group(1) contains only the project name, with possible :
@@ -157,11 +159,13 @@ def tryparse_projects_and_statuses(text):
 	else:
 		return parse_plaintext_status(text)
 
+@timeit
 def load_status_emails_for_date(date):
 	#load messages
 	client = IMAPClient()
 	client.login(settings.GMAIL_ACCOUNT, settings.GMAIL_AUTH)
-	messages = client.status_emails(date)
+	thread = client.search_inbox_for_email_thread(date)
+	messages = client.parse_status_email_thread(thread)
 	client.logout()
 	statuses = []
 	for message in messages:
@@ -177,7 +181,7 @@ def load_status_emails_for_date(date):
 		parsed = tryparse_projects_and_statuses(projects_status)
 		
 		for project, status in parsed:
-			print('PROJECT', project, 'STATUS', status)
+			#print('PROJECT', project, 'STATUS', status)
 			developer = Developer.objects.filter(email=email).first()
 			project, created = Project.objects.get_or_create(name=project)
 			project.save()
