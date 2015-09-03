@@ -4,7 +4,7 @@ var Griddle = require('griddle-react');
 var DatePicker = require('react-datepicker');
 var moment = require('moment');
 
-var testData = [{"project": "Unknown", "status": "Reply with your status update.", "date": "2015-09-01", "id": 556, "developer": "dev null"}, {"project": "Unknown", "status": "SalixWorking on tabs and then moving on to detail cell updates", "date": "2015-09-01", "id": 557, "developer": "zach costa"}, {"project": "Regal", "status": " tracking down a bug in iOS9 version with text truncation wherelayoutManager:didCompleteLayoutForTextContainer:atEnd: get called atdifferent times that with iOS8. Did some task grooming for a new sprint.Working on some fixes to analytics and implementing a new convention fromJeremy. Still no API, their PM is seeing what they can do.", "date": "2015-09-01", "id": 569, "developer": "matt baranowski"}, {"project": "Unknown", "status": "CardnoTECQuick handoff from MattBAttended internal kickoffCreating external kickoff slide deckSkillsosoftResearched NTLM iOS and Android", "date": "2015-09-01", "id": 559, "developer": "mike runnals"}, {"project": "Unknown", "status": "Signal360 Talked to Carbonhouse to update the feature list and wating for Charles to merge the SDKs with VenueKit", "date": "2015-09-01", "id": 560, "developer": "serdar aslan"}, {"project": "Hatch Baby", "status": "Fixing a bug in the feeding metric/imperial conversions, then onto designreview tickets.", "date": "2015-09-01", "id": 561, "developer": "ben frye"}, {"project": "Unknown", "status": "burstimage uploading.uploading.uploading.NOT DONE", "date": "2015-09-01", "id": 562, "developer": "raven smith"}, {"project": "Unknown", "status": "NCAA10th inning. 5th quarter. 3rd half.Hoping to release today. Crunching through bugs found by QA. Fixing a bad memory leak.Halen WootenSoftware Engineer(o) 888.329.9875 x143halen.wooten@willowtreeapps.com <mailto:halen.wooten@willowtreeapps.com>WillowTree, Inc.", "date": "2015-09-01", "id": 563, "developer": "halen wooten"}, {"project": "Salix", "status": "Syncing on metadata and style guide today!", "date": "2015-09-01", "id": 564, "developer": "ian terrell"}, {"project": "Unknown", "status": "In the triangle underground office and missing the home team like crazy. The move was exhausting but it all went well.Thrillcall: catching up on progress, generation new signing bitsPopCast!: catching up on streaming email thread, working on getting sample streaming app functional with test server", "date": "2015-09-01", "id": 565, "developer": "joel garrett"}, {"project": "Unknown", "status": "SalixRefactoring the wrapper layer, trying out the VisualOn ad sdk and Google IMA SDK", "date": "2015-09-01", "id": 568, "developer": "tatyana casino"}, {"project": "Unknown", "status": "UVA HealthHope to actually start working on caching today. Perhaps going with a MVVM style modelWillowTreeReachabilityWorking to finalize the feedback from Ian and Yohe. Maybe make a cocoapod today :)Erik LaMannaPrincipal Software Engineer888.329.9875 x122  On September 1, 2015 at 9:36:13 AM, Ryan Grigsby (ryan.grigsby@willowtreeapps.com) wrote:WranglerFighting with Django's JSON Serialization and trying to get React+Griddle to behave", "date": "2015-09-01", "id": 570, "developer": "erik lamanna"}, {"project": "Unknown", "status": "Pepsi- Actually finishing document download today after a > 1.5 conversation", "date": "2015-09-01", "id": 571, "developer": "andrew carter"}, {"project": "Unknown", "status": "FOX", "date": "2015-09-01", "id": 572, "developer": "pete springett"}];
+//var testData = [{"project": "Unknown", "status": "Reply with your status update.", "date": "2015-09-01", "id": 556, "developer": "dev null"}, {"project": "Unknown", "status": "SalixWorking on tabs and then moving on to detail cell updates", "date": "2015-09-01", "id": 557, "developer": "zach costa"}, {"project": "Regal", "status": " tracking down a bug in iOS9 version with text truncation wherelayoutManager:didCompleteLayoutForTextContainer:atEnd: get called atdifferent times that with iOS8. Did some task grooming for a new sprint.Working on some fixes to analytics and implementing a new convention fromJeremy. Still no API, their PM is seeing what they can do.", "date": "2015-09-01", "id": 569, "developer": "matt baranowski"}, {"project": "Unknown", "status": "CardnoTECQuick handoff from MattBAttended internal kickoffCreating external kickoff slide deckSkillsosoftResearched NTLM iOS and Android", "date": "2015-09-01", "id": 559, "developer": "mike runnals"}, {"project": "Unknown", "status": "Signal360 Talked to Carbonhouse to update the feature list and wating for Charles to merge the SDKs with VenueKit", "date": "2015-09-01", "id": 560, "developer": "serdar aslan"}, {"project": "Hatch Baby", "status": "Fixing a bug in the feeding metric/imperial conversions, then onto designreview tickets.", "date": "2015-09-01", "id": 561, "developer": "ben frye"}, {"project": "Unknown", "status": "burstimage uploading.uploading.uploading.NOT DONE", "date": "2015-09-01", "id": 562, "developer": "raven smith"}, {"project": "Unknown", "status": "NCAA10th inning. 5th quarter. 3rd half.Hoping to release today. Crunching through bugs found by QA. Fixing a bad memory leak.Halen WootenSoftware Engineer(o) 888.329.9875 x143halen.wooten@willowtreeapps.com <mailto:halen.wooten@willowtreeapps.com>WillowTree, Inc.", "date": "2015-09-01", "id": 563, "developer": "halen wooten"}, {"project": "Salix", "status": "Syncing on metadata and style guide today!", "date": "2015-09-01", "id": 564, "developer": "ian terrell"}, {"project": "Unknown", "status": "In the triangle underground office and missing the home team like crazy. The move was exhausting but it all went well.Thrillcall: catching up on progress, generation new signing bitsPopCast!: catching up on streaming email thread, working on getting sample streaming app functional with test server", "date": "2015-09-01", "id": 565, "developer": "joel garrett"}, {"project": "Unknown", "status": "SalixRefactoring the wrapper layer, trying out the VisualOn ad sdk and Google IMA SDK", "date": "2015-09-01", "id": 568, "developer": "tatyana casino"}, {"project": "Unknown", "status": "UVA HealthHope to actually start working on caching today. Perhaps going with a MVVM style modelWillowTreeReachabilityWorking to finalize the feedback from Ian and Yohe. Maybe make a cocoapod today :)Erik LaMannaPrincipal Software Engineer888.329.9875 x122  On September 1, 2015 at 9:36:13 AM, Ryan Grigsby (ryan.grigsby@willowtreeapps.com) wrote:WranglerFighting with Django's JSON Serialization and trying to get React+Griddle to behave", "date": "2015-09-01", "id": 570, "developer": "erik lamanna"}, {"project": "Unknown", "status": "Pepsi- Actually finishing document download today after a > 1.5 conversation", "date": "2015-09-01", "id": 571, "developer": "andrew carter"}, {"project": "Unknown", "status": "FOX", "date": "2015-09-01", "id": 572, "developer": "pete springett"}];
 
 var statusModule = function () {
   var rootURL = 'http://localhost:8000/';
@@ -58,13 +58,11 @@ var statusModule = function () {
   }
 
   function pluralRequestGenerator(path) {
-    return function() {
+    return function(cb) {
       //console.log('request generated', path);
-      if(arguments.length === 1) {
-        request(rootURL + path + '/', arguments[0]);
-      } else {
-        request(rootURL + path + '/?page=' + arguments[0], arguments[1]);
-      }
+      
+      request(rootURL + path + '/', arguments[0]);
+      
     };
   }
 
@@ -107,7 +105,9 @@ var columnMetadata = [
 
 var ExternalStatusAPIComponent = React.createClass({
     getInitialState: function(){
-      var initial = { "results": [],
+      var initial = { 
+          "results": [],
+          "serverData": [],
           "currentPage": 0,
           "maxPages": 0,
           "externalResultsPerPage": 25,
@@ -119,12 +119,13 @@ var ExternalStatusAPIComponent = React.createClass({
     },
     getStatusData: function(page) {
         var that = this;
-        var paged = page||1;
 
-        statusModule.getStatuses(paged, function(data) {
+        statusModule.getStatuses(function(data) {
           that.setState({
               serverData: data,
-              results: data
+              results: data,
+              currentPage: 0,
+              maxPages: Math.round(data.length > that.state.externalResultsPerPage ? data.length/that.state.externalResultsPerPage : 1),
           });
         });
     },
@@ -145,7 +146,9 @@ var ExternalStatusAPIComponent = React.createClass({
       statusModule.getStatus(date.year(), date.month()+1, date.date(), function(data) {
         that.setState({
           serverData: data,
-          results: data
+          results: data,
+          currentPage: 0,
+          maxPages: Math.round(data.length > that.state.externalResultsPerPage ? data.length/that.state.externalResultsPerPage : 1),
         });
       });
     },
@@ -159,6 +162,7 @@ var ExternalStatusAPIComponent = React.createClass({
           "currentPage": index
         });
     },
+
     sortData: function(sort, sortAscending, data){
       //sorting should generally happen wherever the data is coming from 
       sortedData = _.sortBy(data, function(item){
