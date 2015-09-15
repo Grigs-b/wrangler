@@ -1,6 +1,7 @@
 #!/bin/bash
 
 NAME="wrangler"                                  # Name of the application
+VIRTUALENVDIR=/webapps/django
 DJANGODIR=/webapps/django/wrangler             # Django project directory
 SOCKFILE=/webapps/django/run/gunicorn.sock  # we will communicte using this unix socket
 USER=django                                        # the user to run as
@@ -13,7 +14,7 @@ echo "Starting $NAME as `whoami`"
 
 # Activate the virtual environment
 cd $DJANGODIR
-source ../bin/activate
+source $VIRTUALENVDIR/bin/activate
 export DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE
 export PYTHONPATH=$DJANGODIR:$PYTHONPATH
 
@@ -23,7 +24,7 @@ test -d $RUNDIR || mkdir -p $RUNDIR
 
 # Start your Django Unicorn
 # Programs meant to be run under supervisor should not daemonize themselves (do not use --daemon)
-exec ../bin/gunicorn ${DJANGO_WSGI_MODULE}:application \
+exec $VIRTUALENVDIR/bin/gunicorn ${DJANGO_WSGI_MODULE}:application \
   --name $NAME \
   --workers $NUM_WORKERS \
   --user=$USER --group=$GROUP \
