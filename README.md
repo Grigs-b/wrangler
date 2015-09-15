@@ -53,6 +53,15 @@ Run `gulp` to build the main script and set up the watch task that will check fo
 Nginx
 =================
 ```
-sudo cp /webapps/django/wrangler/wrangler-nginx.conf /etc/nginx/sites-available/wrangler
+sudo cp /webapps/django/wrangler/deploy/wrangler-nginx.conf /etc/nginx/sites-available/wrangler
 sudo ln -s /etc/nginx/sites-available/wrangler /etc/nginx/sites-enabled/wrangler
+```
+
+Supervisor
+=================
+```
+sudo apt-get install supervisor -y
+sudo cp /webapps/django/deploy/supervisor.conf /etc/supervisor/conf.d/wrangler.conf
+mkdir -p /webapps/django/logs/
+touch /webapps/django/logs/gunicorn_supervisor.log 
 ```
