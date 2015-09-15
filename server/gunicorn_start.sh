@@ -2,7 +2,7 @@
 
 NAME="wrangler"                                  # Name of the application
 VIRTUALENVDIR=/webapps/django
-DJANGODIR=/webapps/django/wrangler             # Django project directory
+DJANGODIR=/webapps/django/wrangler/server            # Django project directory
 SOCKFILE=/webapps/django/run/gunicorn.sock  # we will communicte using this unix socket
 USER=django                                        # the user to run as
 GROUP=webapps                                     # the group to run as
