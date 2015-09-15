@@ -10,6 +10,7 @@ Django==1.8.4
 django-cors-headers==1.1.0
 enum34==1.0.4
 google-api-python-client==1.4.1
+gunicorn==19.3.0
 httplib2==0.9.1
 idna==2.0
 ipaddress==1.0.14

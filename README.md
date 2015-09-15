@@ -15,6 +15,10 @@ Currently uses two environment variables for authenticating to IMAP
 * `GMAIL_ACCOUNT` - gmail account that has access to dev emails
 * `GMAIL_AUTH` - gmail account password
 
+*Linux Installs*
+Sometimes you need additional packages for pip install to work, run your linux versions flavor of the following:
+`sudo apt-get install libssl-dev python-dev libffi-dev gcc`
+
 To run the webservice, activate your virtual environment and pip install the requirements located in the server directory.
 `pip install -r requirements.txt`
 
