@@ -49,3 +49,10 @@ Use `npm install` in the directory with the package.json to install the dependen
 
 Run `gulp` to build the main script and set up the watch task that will check for changes in the source files.
 
+
+Nginx
+=================
+```
+sudo cp /webapps/django/wrangler/wrangler-nginx.conf /etc/nginx/sites-available/wrangler
+sudo ln -s /etc/nginx/sites-available/wrangler /etc/nginx/sites-enabled/wrangler
+```
